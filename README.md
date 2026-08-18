@@ -13,19 +13,18 @@ The reproduced settings are:
 
 The final stage loads each USA matrix with pyroe's velocity representation, combines cells with unique `SAMPLE:BARCODE` identifiers, fits the scVelo dynamical model, and calculates a velocity graph and latent time.
 
-## Directory placement and configuration
+## Reference and configuration
 
-Copy this repository directly below the same `Irene` directory that contains the old `velocyto_analysis_pipeline`, mm10 index, and t2g directory. For example:
+The reused reference is configured independently of the repository location:
 
 ```text
-Irene/
+/data/vashah/CELLRANGER_PIPELINE/Input_data_to_pipeline/velocyto_pipeline/
 ├── mm10-2.1.0_splici_fl146_idx/
-├── mm10_2.1.0_splici_fl146/
-├── velocyto_analysis_pipeline/
-└── RNA_velocity_exp1/                 # this repository
+└── mm10_2.1.0_splici_fl146/
+    └── splici_fl146_t2g_3col.tsv
 ```
 
-If it is stored elsewhere, set `IRENE_DIR` to the absolute Irene directory before validation. Review [config/config.env](config/config.env), particularly `PROJECT_DIR`, `FASTQ_DIR`, and reference paths.
+If it is moved, export `REFERENCE_ROOT=/new/reference/parent` before validation. Review [config/config.env](config/config.env), particularly `PROJECT_DIR`, `FASTQ_DIR`, and reference paths. The previous Pool2 metadata is not needed at runtime because its confirmed settings are encoded directly in the mapping and quantification scripts.
 
 Add the true experimental conditions, biological replicates, and timepoints to [config/samples.tsv](config/samples.tsv). They are deliberately blank because sample names alone do not establish developmental direction.
 
