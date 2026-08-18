@@ -1,0 +1,19 @@
+# Cluster job logs and generated analysis outputs
+logs/
+results/
+*.out
+*.err
+*.h5ad
+*.loom
+
+# Python and notebook caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local environments and editor metadata
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
