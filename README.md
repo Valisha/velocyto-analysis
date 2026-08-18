@@ -24,7 +24,9 @@ The reused reference is configured independently of the repository location:
     └── splici_fl146_t2g_3col.tsv
 ```
 
-If it is moved, export `REFERENCE_ROOT=/new/reference/parent` before validation. Review [config/config.env](config/config.env), particularly `PROJECT_DIR`, `FASTQ_DIR`, and reference paths. The previous Pool2 metadata is not needed at runtime because its confirmed settings are encoded directly in the mapping and quantification scripts.
+If it is moved, export `REFERENCE_ROOT=/new/reference/parent` before validation. Review [config/config.env](config/config.env), particularly `INPUT_PROJECT_DIR`, `FASTQ_DIR`, and reference paths. The previous Pool2 metadata is not needed at runtime because its confirmed settings are encoded directly in the mapping and quantification scripts.
+
+The FASTQs remain under the read-only `/data/aaliu` project. Generated mappings, quantifications, and scVelo results are written under the current repository clone by default (for example `/data/vashah/Aaron/RNA_VELOCITY`). Set `WORK_ROOT=/another/writable/path` to override this location.
 
 Add the true experimental conditions, biological replicates, and timepoints to [config/samples.tsv](config/samples.tsv). They are deliberately blank because sample names alone do not establish developmental direction.
 
@@ -85,6 +87,8 @@ ROOT_CLUSTER="Progenitor"
 Annotation cell IDs must use `SAMPLE:BARCODE`, such as `E2:AAAC...-1`. Without a supplied root, scVelo estimates root and terminal states from the velocity transition matrix. Treat that as exploratory inference rather than independent proof of lineage direction.
 
 ## Outputs
+
+With the default configuration, these paths are below the repository root:
 
 - `${QUANT_ROOT}/IGSC_Exp1_SAMPLE_map/map.rad`: mapping output.
 - `${QUANT_ROOT}/IGSC_Exp1_SAMPLE_quant_res/`: USA spliced/unspliced/ambiguous matrices.

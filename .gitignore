@@ -1,6 +1,8 @@
 # Cluster job logs and generated analysis outputs
 logs/
 results/
+/velocyto_analysis_pipeline/
+/rna_velocity/
 *.out
 *.err
 *.h5ad
