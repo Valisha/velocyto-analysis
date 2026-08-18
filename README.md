@@ -38,23 +38,31 @@ source rna-velocity-env/bin/activate
 pip install -r requirements.txt
 ```
 
-## Validate and submit
+## Validate and run
 
 From the repository root on `implk-01`:
 
 ```bash
 chmod +x scripts/*.sh scripts/*.py
 ./scripts/00_validate_inputs.sh
-./scripts/submit_pipeline.sh
 ```
 
-The launcher submits three dependency-linked stages:
+`implk-01` does not expose SLURM. Start its scheduler-free runner in the background so the analysis survives an SSH disconnect:
+
+```bash
+mkdir -p logs
+nohup ./scripts/submit_pipeline.sh > logs/pipeline_local.log 2>&1 &
+echo $!
+tail -f logs/pipeline_local.log
+```
+
+The launcher detects whether `sbatch` exists. Without it, samples run sequentially using 16 threads each; completed mapping and quantification outputs are skipped safely when resuming. With SLURM, it submits dependency-linked arrays. Both modes run three stages:
 
 1. `01_salmon_alevin_map.sbatch`: four-lane Salmon/alevin mapping per sample.
 2. `02_alevin_fry_quant.sbatch`: permit-list generation, collation, and USA quantification.
 3. `03_scvelo.sbatch`: combined dynamical RNA-velocity and trajectory analysis.
 
-A downstream stage starts only after every task in the preceding array succeeds. Monitor with:
+A downstream stage starts only after the preceding stage succeeds. On a SLURM system, monitor with:
 
 ```bash
 squeue -u "$USER"

@@ -6,6 +6,11 @@ REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${REPO_DIR}"
 mkdir -p logs
 
+if ! command -v sbatch >/dev/null 2>&1; then
+    echo "SLURM sbatch is unavailable; switching to sequential local execution."
+    exec "${SCRIPT_DIR}/run_pipeline_local.sh"
+fi
+
 "${SCRIPT_DIR}/00_validate_inputs.sh"
 map_job=$(sbatch --parsable "${SCRIPT_DIR}/01_salmon_alevin_map.sbatch")
 quant_job=$(sbatch --parsable --dependency="afterok:${map_job}" "${SCRIPT_DIR}/02_alevin_fry_quant.sbatch")
